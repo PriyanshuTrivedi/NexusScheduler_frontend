@@ -1,0 +1,11 @@
+.auth-choice { width:min(880px,calc(100% - 32px)); margin:0 auto; padding:70px 0; text-align:center; }
+.auth-choice h1 { font-size:clamp(32px,5vw,48px); margin:10px 0 12px; letter-spacing:-.045em; }
+.auth-choice > p { color:var(--muted); max-width:620px; margin:0 auto 32px; line-height:1.65; }
+.auth-choice-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; text-align:left; }
+.auth-choice-card { padding:24px; background:#fff; border:1px solid var(--border); border-radius:20px; display:flex; gap:17px; box-shadow:var(--shadow); transition:.18s ease; }
+.auth-choice-card:hover { transform:translateY(-3px); border-color:#c7c3ff; }
+.choice-icon { width:50px; height:50px; border-radius:15px; display:grid; place-items:center; color:#5146e5; background:#eeecff; flex:none; }
+.choice-icon.provider { color:#0d7a55; background:#e8f8f0; }
+.auth-choice-card strong { display:block; font-size:17px; margin:3px 0 6px; }
+.auth-choice-card span:not(.choice-icon) { display:block; color:var(--muted); font-size:13px; line-height:1.5; }
+@media(max-width:650px){.auth-choice-grid{grid-template-columns:1fr;}}

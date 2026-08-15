@@ -1,0 +1,478 @@
+.bookings-page .booking-tabs{
+  display:flex;
+  gap:5px;
+  padding:4px;
+  background:#eef0f5;
+  border-radius:11px;
+  width:max-content;
+  margin-bottom:16px;
+}
+
+.booking-tabs button{
+  height:38px;
+  border:0;
+  border-radius:8px;
+  padding:0 13px;
+  background:transparent;
+  color:#6d7688;
+  font-size:11px;
+  font-weight:850;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.booking-tabs button.active{
+  background:#fff;
+  color:#5146e5;
+  box-shadow:0 2px 7px rgba(31,41,55,.07);
+}
+
+.booking-list{
+  display:grid;
+  gap:10px;
+}
+
+.booking-card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:17px;
+  display:flex;
+  align-items:center;
+  gap:13px;
+}
+
+.booking-icon{
+  width:43px;
+  height:43px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  background:#eeecff;
+  color:#5146e5;
+  flex:none;
+}
+
+.booking-main{
+  flex:1;
+  min-width:0;
+}
+
+.booking-title-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.booking-title-row h3{
+  margin:0;
+  font-size:14px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.status-badge{
+  padding:4px 7px;
+  border-radius:7px;
+  background:#eaf8f1;
+  color:#16815a;
+  font-size:8px;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+.status-rescheduled{
+  background:#eeecff;
+  color:#5146e5;
+}
+
+.status-completed{
+  background:#eef1f5;
+  color:#667085;
+}
+
+.status-cancelled{
+  background:#fff0ef;
+  color:#c24d4d;
+}
+
+.status-failed{
+  background:#fff5e8;
+  color:#ad6a13;
+}
+
+.booking-main p{
+  margin:5px 0;
+  color:#697386;
+  font-size:11px;
+}
+
+.booking-main small{
+  color:#a0a7b3;
+  font-size:9px;
+}
+
+.booking-detail{
+  display:flex;
+  align-items:flex-start;
+  gap:6px;
+}
+
+.booking-detail svg{
+  flex:none;
+  color:#7a8497;
+  margin-top:1px;
+}
+
+/* Rescheduled booking: old time crossed out + final time */
+.booking-reschedule-time{
+  display:grid;
+  gap:4px;
+  margin:6px 0 7px;
+  font-size:11px;
+}
+
+.booking-old-time{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  color:#a4a9b4;
+  text-decoration:line-through;
+}
+
+.booking-current-time{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:#536078;
+  font-weight:800;
+}
+
+.current-marker{
+  width:3px;
+  height:15px;
+  border-radius:2px;
+  background:#5146e5;
+  display:inline-block;
+}
+
+.booking-actions{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+  align-self:center;
+}
+
+.event-action{
+  border:1px solid var(--border);
+  background:#fff;
+  border-radius:9px;
+  padding:8px 10px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-size:10px;
+  font-weight:800;
+  white-space:nowrap;
+}
+
+.event-action.reschedule{
+  color:#5146e5;
+}
+
+.event-action.cancel-booking{
+  color:#c45a5a;
+}
+
+.event-action:hover{
+  background:#f8f8fc;
+}
+
+.booking-meet-link{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  color:#5146e5;
+  font-size:10px;
+  font-weight:850;
+  margin:3px 0 6px;
+}
+
+
+/* ==================================================
+   RESCHEDULE MODAL
+   ================================================== */
+
+.reschedule-backdrop{
+  position:fixed;
+  inset:0;
+  z-index:1300;
+  background:rgba(18,25,43,.42);
+  backdrop-filter:blur(4px);
+  display:grid;
+  place-items:center;
+  padding:20px;
+}
+
+/*
+ * Important:
+ * The modal itself must NOT scroll.
+ *
+ * The calendar below has its own scroll container.
+ */
+.reschedule-dialog{
+  width:min(1080px,100%);
+  max-height:92vh;
+  overflow:hidden;
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:24px;
+  box-shadow:0 28px 90px rgba(20,28,48,.24);
+
+  display:flex;
+  flex-direction:column;
+}
+
+.reschedule-dialog-head{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  align-items:flex-start;
+  flex:none;
+}
+
+.reschedule-dialog-head h2{
+  margin:7px 0 5px;
+  font-size:25px;
+}
+
+.reschedule-dialog-head p{
+  margin:0;
+  color:var(--muted);
+  font-size:11px;
+}
+
+.icon-button{
+  width:36px;
+  height:36px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:#fff;
+  color:#697386;
+  display:grid;
+  place-items:center;
+  flex:none;
+}
+
+.reschedule-current{
+  margin:16px 0 10px;
+  padding:12px 14px;
+  background:#f8f8fc;
+  border:1px solid var(--border);
+  border-radius:12px;
+
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  align-items:center;
+
+  flex:none;
+}
+
+.reschedule-current span{
+  font-size:10px;
+  color:#8b94a5;
+  font-weight:800;
+}
+
+.reschedule-current strong{
+  font-size:11px;
+  color:#566176;
+}
+
+
+/* ==================================================
+   RESCHEDULE CALENDAR
+   ================================================== */
+
+.reschedule-calendar-dialog .slot-calendar{
+  padding:14px;
+  border-radius:16px;
+  box-shadow:none;
+
+  /*
+   * Prevent the calendar component itself from
+   * becoming another outer scrolling container.
+   */
+  min-height:0;
+  overflow:hidden;
+
+  flex:none;
+}
+
+.reschedule-calendar-dialog .slot-calendar-header{
+  margin-bottom:10px;
+}
+
+.reschedule-calendar-dialog .slot-calendar-header h2{
+  font-size:18px;
+  margin-top:5px;
+  margin-bottom:3px;
+}
+
+.reschedule-calendar-dialog .slot-calendar-header p{
+  font-size:10px;
+}
+
+/*
+ * This is the ONLY scrolling area inside the
+ * reschedule modal.
+ *
+ * Reduced from 470px to 330px so the entire
+ * reschedule dialog fits without an outer scrollbar.
+ */
+.reschedule-calendar-dialog .calendar-board-wrap{
+  max-height:330px;
+  overflow:auto;
+}
+
+.reschedule-calendar-dialog .calendar-board{
+  grid-auto-rows:42px;
+}
+
+.reschedule-calendar-dialog .calendar-time-label{
+  font-size:8px;
+}
+
+.reschedule-calendar-dialog .calendar-slot span{
+  font-size:8px;
+}
+
+.reschedule-calendar-dialog .calendar-slot small{
+  font-size:7px;
+}
+
+.reschedule-calendar-dialog .calendar-legend{
+  margin-top:9px;
+  gap:14px;
+  font-size:9px;
+}
+
+
+/* ==================================================
+   SELECTED NEW TIME + ACTIONS
+   ================================================== */
+
+.reschedule-selection{
+  flex:none;
+
+  margin-top:10px;
+  padding:14px;
+
+  border:1px solid var(--border);
+  background:#f8f8fc;
+  border-radius:13px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+}
+
+.reschedule-selection > div:first-child{
+  display:grid;
+  gap:4px;
+  min-width:0;
+}
+
+.reschedule-selection strong{
+  font-size:11px;
+  color:#566176;
+}
+
+.reschedule-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  flex:none;
+}
+
+.reschedule-actions .button{
+  min-width:110px;
+}
+
+
+/* ==================================================
+   MOBILE
+   ================================================== */
+
+@media(max-width:650px){
+
+  .booking-title-row{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .status-badge{
+    order:-1;
+  }
+
+  .booking-card{
+    align-items:flex-start;
+    flex-wrap:wrap;
+  }
+
+  .booking-actions{
+    width:100%;
+    flex-direction:row;
+    margin-left:56px;
+  }
+
+  .event-action{
+    flex:1;
+    justify-content:center;
+  }
+
+  .reschedule-backdrop{
+    padding:10px;
+  }
+
+  .reschedule-dialog{
+    padding:16px;
+    max-height:96vh;
+    border-radius:18px;
+  }
+
+  .reschedule-current{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:5px;
+    padding:10px 12px;
+    margin-top:12px;
+  }
+
+  .reschedule-calendar-dialog .slot-calendar{
+    padding:10px;
+  }
+
+  .reschedule-calendar-dialog .calendar-board-wrap{
+    max-height:280px;
+  }
+
+  .reschedule-selection{
+    align-items:stretch;
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .reschedule-actions{
+    flex-direction:column-reverse;
+  }
+
+  .reschedule-actions .button{
+    width:100%;
+  }
+}

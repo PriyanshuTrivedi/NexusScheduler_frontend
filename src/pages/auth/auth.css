@@ -1,0 +1,138 @@
+.auth-page{width:min(1060px,calc(100% - 40px));margin:0 auto;min-height:calc(100vh - 72px);padding:70px 0;display:grid;grid-template-columns:1fr 460px;align-items:center;gap:65px}.auth-intro h1{font-size:clamp(38px,5vw,58px);line-height:1;letter-spacing:-.05em;margin:14px 0}.auth-intro p{max-width:520px;color:var(--muted);line-height:1.7}.back-link{display:inline-flex;align-items:center;gap:6px;color:#6d7687;font-size:12px;font-weight:750;margin-bottom:25px}.auth-card{background:#fff;border:1px solid var(--border);border-radius:22px;padding:27px;box-shadow:var(--shadow)}.auth-card-heading{display:flex;gap:11px;align-items:center;margin-bottom:23px}.brand-mark.small{width:38px;height:38px;font-size:14px}.auth-card-heading h2{font-size:21px;margin:0}.auth-card-heading p{font-size:11px;color:#7d8697;margin:3px 0 0}.identifier-switch{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:4px;background:#f5f6fa;border-radius:11px;margin-bottom:16px}.identifier-switch button{height:38px;border:0;background:transparent;border-radius:8px;color:#717b8d;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px}.identifier-switch button.active{background:#fff;color:#5146e5;box-shadow:0 2px 8px rgba(31,41,55,.07)}.input-icon-wrap{position:relative}.input-icon-wrap>svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#9aa2b2}.input-icon-wrap input{padding-left:37px}.auth-card .field{margin-bottom:14px}.auth-footer{text-align:center;color:#7c8595;font-size:11px;margin:17px 0 0}.auth-footer a{color:#5146e5;font-weight:800}.provider-type-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:15px}.provider-type-grid button{padding:13px;text-align:left;border:1px solid var(--border);border-radius:12px;background:#fff;color:#687285}.provider-type-grid button.active{border-color:#8f89f5;background:#f3f2ff;color:#5146e5}.provider-type-grid svg{margin-bottom:6px}.provider-type-grid strong,.provider-type-grid span{display:block}.provider-type-grid strong{font-size:12px;color:inherit}.provider-type-grid span{font-size:9px;color:#8a93a4;margin-top:3px;line-height:1.4}.provider-type-grid button.active span{color:#6f69ca}@media(max-width:850px){.auth-page{grid-template-columns:1fr;max-width:600px;padding-top:40px}.auth-intro{order:0}.auth-card{order:1}}@media(max-width:520px){.auth-page{width:calc(100% - 24px)}.provider-type-grid{grid-template-columns:1fr}}
+
+.auth-registration-card{max-height:none}
+.registration-section-heading{display:flex;align-items:center;gap:10px;margin:20px 0 12px}
+.registration-section-heading>span{width:24px;height:24px;display:grid;place-items:center;border-radius:50%;background:#eeecff;color:#5146e5;font-size:11px;font-weight:900}
+.registration-section-heading strong,.registration-section-heading small{display:block}
+.registration-section-heading strong{font-size:12px;color:#17233e}
+.registration-section-heading small{margin-top:2px;color:#7b8597;font-size:10px}
+.create-inline{display:grid;grid-template-columns:1fr auto;gap:8px;margin:-5px 0 8px}
+.create-inline input{min-width:0}
+.create-inline .button{height:42px;padding:0 13px;font-size:11px}
+.meeting-registration-options{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.meeting-registration-options button{min-height:74px;padding:10px;text-align:left;border:1px solid var(--border);border-radius:11px;background:#fff;color:#687285;cursor:pointer}
+.meeting-registration-options button.active{border-color:#8f89f5;background:#f3f2ff;color:#5146e5;box-shadow:0 0 0 1px #8f89f5}
+.meeting-registration-options svg{display:block;margin-bottom:6px}
+.meeting-registration-options strong,.meeting-registration-options span{display:block}
+.meeting-registration-options strong{font-size:11px;color:inherit}
+.meeting-registration-options span{font-size:9px;color:#8a93a4;margin-top:3px}
+.field-label-with-icon{display:flex;align-items:center;gap:5px}
+.field-help{display:block;margin-top:6px;color:#7a8497;font-size:10px;line-height:1.4}
+@media(max-width:600px){.meeting-registration-options{grid-template-columns:1fr}.create-inline{grid-template-columns:1fr}.create-inline .button{width:100%}}
+
+/* Resource registration: create-new dialogs */
+.creation-dialog-backdrop{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  display:grid;
+  place-items:center;
+  padding:20px;
+  background:rgba(18,25,43,.38);
+  backdrop-filter:blur(3px);
+}
+.creation-dialog{
+  position:relative;
+  width:min(430px,100%);
+  padding:26px;
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:20px;
+  box-shadow:0 24px 70px rgba(20,28,48,.2);
+}
+.creation-dialog-close{
+  position:absolute;
+  top:13px;
+  right:13px;
+  width:32px;
+  height:32px;
+  display:grid;
+  place-items:center;
+  border:0;
+  border-radius:9px;
+  background:#f5f6fa;
+  color:#737d90;
+  cursor:pointer;
+}
+.creation-dialog-icon{
+  width:40px;
+  height:40px;
+  display:grid;
+  place-items:center;
+  margin-bottom:13px;
+  border-radius:12px;
+  background:#eeecff;
+  color:#5146e5;
+}
+.creation-dialog h3{
+  margin:0;
+  color:#17233e;
+  font-size:20px;
+  letter-spacing:-.02em;
+}
+.creation-dialog>p{
+  margin:7px 0 19px;
+  color:#7b8597;
+  font-size:12px;
+  line-height:1.55;
+}
+.creation-dialog-field{margin-bottom:18px!important}
+.creation-dialog-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+}
+.creation-dialog-actions .button{min-width:92px;height:40px}
+
+/* Native selects get one consistent visual treatment across registration. */
+.auth-registration-card select{
+  appearance:none;
+  -webkit-appearance:none;
+  width:100%;
+  min-height:48px;
+  padding:0 42px 0 14px;
+  border:1px solid var(--border);
+  border-radius:11px;
+  background:#fff;
+  color:#17233e;
+  font:inherit;
+  font-size:12px;
+  font-weight:650;
+  cursor:pointer;
+}
+.auth-registration-card select:focus{
+  outline:none;
+  border-color:#8f89f5;
+  box-shadow:0 0 0 3px rgba(81,70,229,.09);
+}
+.auth-registration-card .field:has(select){position:relative}
+.auth-registration-card .field:has(select)::after{
+  content:"";
+  position:absolute;
+  right:15px;
+  bottom:16px;
+  width:7px;
+  height:7px;
+  border-right:1.7px solid #657084;
+  border-bottom:1.7px solid #657084;
+  transform:rotate(45deg);
+  pointer-events:none;
+}
+
+@media(max-width:520px){
+  .creation-dialog{padding:22px}
+  .creation-dialog-actions{flex-direction:column-reverse}
+  .creation-dialog-actions .button{width:100%}
+}
+
+/* Keep the account switch link and account type kicker visually separated. */
+.auth-intro .back-link{
+  display:flex;
+  width:max-content;
+  margin-bottom:32px;
+}
+.auth-intro .section-kicker{
+  display:block;
+  margin-bottom:8px;
+}
+.registration-address-field{transition:opacity .15s}.field-faded{opacity:.48}.registration-address-field input:disabled{cursor:not-allowed;background:#f5f6f9}.recurring-registration-card{margin:19px 0 4px;padding:15px;border:1px solid #e0e4ed;border-radius:14px;background:#fafbfe;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}.recurring-registration-card strong,.recurring-registration-card small{display:block}.recurring-registration-card strong{font-size:12px;color:#17233e}.recurring-registration-card small{margin-top:4px;color:#7b8497;font-size:9px}.schedule-checkbox{grid-column:1;display:flex;align-items:center;gap:7px;font-size:10px;color:#566176;font-weight:750}.schedule-checkbox input{accent-color:var(--primary)}.recurring-registration-card>.button{grid-column:2;grid-row:1/3;height:40px;font-size:10px}@media(max-width:600px){.recurring-registration-card{grid-template-columns:1fr}.schedule-checkbox{grid-column:1}.recurring-registration-card>.button{grid-column:1;grid-row:auto;width:100%}}
