@@ -2,8 +2,8 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { CalendarDays, ChevronLeft, ChevronRight } from "lucide-react";
 import "./CalendarSlots.css";
 
-const HOUR_START = 8;
-const HOUR_END = 20;
+const HOUR_START = 5;
+const HOUR_END = 23;
 const STEP_MINUTES = 30;
 const slotDate = (unix) => new Date(Number(unix) * 1000);
 const dateKey = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
