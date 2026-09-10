@@ -230,34 +230,8 @@ export default function Register() {
         throw new Error("Select an organization before creating your account.");
       }
 
-      let latitude;
-      let longitude;
-
-      if (meetingMode !== "online") {
-        if (!form.address.trim()) {
-          throw new Error("Enter the address where clients will meet you.");
-        }
-
-        let location;
-        try {
-          location = await api.geocode(form.address.trim());
-        } catch (err) {
-          throw new Error(
-            friendlyError(
-              err,
-              "We couldn't find that address. Please check it and try again.",
-            ),
-          );
-        }
-
-        latitude = Number(location.latitude ?? location.lat);
-        longitude = Number(location.longitude ?? location.lng);
-
-        if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
-          throw new Error(
-            "We couldn't find that address. Please enter a more specific address.",
-          );
-        }
+      if (meetingMode !== "online" && !form.address.trim()) {
+        throw new Error("Enter the address where clients will meet you.");
       }
 
       const body = {
@@ -271,12 +245,7 @@ export default function Register() {
         org_id: tenantType === "organization" ? form.orgId : undefined,
         resource_type_id: form.resourceTypeId,
         meeting_mode: `MEETING_MODE_${meetingMode.toUpperCase()}`,
-        attributes:
-          meetingMode !== "online"
-            ? { address: form.address.trim() }
-            : undefined,
-        lat: latitude,
-        lng: longitude,
+        address: meetingMode !== "online" ? form.address.trim() : undefined,
         recurrence: recurringEnabled ? (recurringSchedule?.recurrence || []) : [],
       };
 

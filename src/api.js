@@ -76,6 +76,7 @@ export const api = {
     }),
 
   me: () => request("/users/me"),
+
   updateProfile: (body) =>
     request("/users/me", {
       method: "PATCH",
@@ -83,7 +84,9 @@ export const api = {
     }),
 
   organizations: () => request("/organizations"),
+
   organization: (id) => request(`/organizations/${id}`),
+
   createOrganization: (body) =>
     request("/organizations", {
       method: "POST",
@@ -91,6 +94,7 @@ export const api = {
     }),
 
   resourceTypes: () => request("/resource-types"),
+
   createResourceType: (body) =>
     request("/resource-types", {
       method: "POST",
@@ -110,9 +114,16 @@ export const api = {
     }),
 
   myResource: () => request("/resources/me"),
+
   myAvailability: () => request("/resources/me/availability"),
+
   resourceAvailability: (id, startUnix, endUnix) =>
-    request(`/resources/${encodeURIComponent(id)}/availability${qs({ start_unix: startUnix, end_unix: endUnix })}`),
+    request(
+      `/resources/${encodeURIComponent(id)}/availability${qs({
+        start_unix: startUnix,
+        end_unix: endUnix,
+      })}`,
+    ),
 
   updateResource: (body) =>
     request("/resources/me", {
@@ -146,8 +157,11 @@ export const api = {
       body: JSON.stringify(body),
     }),
 
-  booking: (reference) => request(`/bookings/${encodeURIComponent(reference)}`),
+  booking: (reference) =>
+    request(`/bookings/${encodeURIComponent(reference)}`),
+
   upcomingBookings: () => request("/bookings/me/upcoming"),
+
   pastBookings: () => request("/bookings/me/past"),
 
   cancelBooking: (reference) =>
@@ -161,9 +175,8 @@ export const api = {
       body: JSON.stringify(body),
     }),
 
-  geocode: (address) => request(`/geocode?${new URLSearchParams({ address }).toString()}`),
-
   resourceUpcomingBookings: () => request("/resources/me/upcoming"),
+
   resourcePastBookings: () => request("/resources/me/past"),
 
   queryString: qs,

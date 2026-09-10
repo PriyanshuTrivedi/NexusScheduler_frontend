@@ -154,20 +154,13 @@ function ResourceProfile() {
     try {
       setSaving(true); setError(""); setMessage("");
       if (!form.name.trim()) throw new Error("Enter your resource name.");
-      let lat; let lng;
-      if (isOfflineMode) {
-        if (!form.address.trim()) throw new Error("Enter the address where clients will meet you.");
-        const location = await api.geocode(form.address.trim());
-        lat = Number(location.latitude ?? location.lat); lng = Number(location.longitude ?? location.lng);
-        if (!Number.isFinite(lat) || !Number.isFinite(lng)) throw new Error("We couldn't find that address. Please enter a more specific address.");
-      }
+      if (isOfflineMode && !form.address.trim()) throw new Error("Enter the address where clients will meet you.");
       const nextAttributes = {};
-      if (isOfflineMode) nextAttributes.address = form.address.trim();
       attributes.forEach(({ key, value }) => {
         const cleanKey = key.trim(); const cleanValue = value.trim();
         if (cleanKey && cleanKey !== "address" && cleanValue) nextAttributes[cleanKey] = cleanValue;
       });
-      await api.updateResource({ name: form.name.trim(), meeting_mode: `MEETING_MODE_${form.mode.toUpperCase()}`, attributes: nextAttributes, lat, lng });
+      await api.updateResource({ resource_id: resource.resource_id, name: form.name.trim(), meeting_mode: `MEETING_MODE_${form.mode.toUpperCase()}`, address: isOfflineMode ? form.address.trim() : undefined, attributes: nextAttributes });
       await load(); setEditing(false); setMessage("Resource profile updated.");
     } catch (err) {
       setError(err?.message || "We couldn't update your resource profile.");
