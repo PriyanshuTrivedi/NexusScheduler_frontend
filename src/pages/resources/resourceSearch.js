@@ -81,10 +81,10 @@ function sortResults(resources, sort) {
     }
 
     const aSlot = Number(
-      a.next_available_slots?.[0]?.start_unix ?? Infinity,
+      a.next_available_slot_time?.start_unix ?? Infinity,
     );
     const bSlot = Number(
-      b.next_available_slots?.[0]?.start_unix ?? Infinity,
+      b.next_available_slot_time?.start_unix ?? Infinity,
     );
 
     return aSlot - bSlot;
@@ -265,20 +265,6 @@ export default function ResourceSearch() {
       });
 
       let resources = response?.resources || [];
-
-      if (!filters.date && filters.time) {
-        const range = TIME_RANGES[filters.time];
-
-        resources = resources.filter((resource) =>
-          (resource.next_available_slots || []).some((slot) => {
-            const hour = new Date(
-              Number(slot.start_unix) * 1000,
-            ).getHours();
-
-            return hour >= range[0] && hour < range[1];
-          }),
-        );
-      }
 
       setResults(sortResults(resources, filters.sort));
       setSearched(true);

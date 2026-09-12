@@ -110,16 +110,45 @@ function ResourceProfile() {
 
   const load = async () => {
     try {
-      setLoading(true); setError("");
+      setLoading(true);
+      setError("");
+
       const response = await api.myResource();
       const current = response.resource;
-      if (!current) throw new Error("Your resource profile could not be found.");
-      setResource(current); setOrganization(response.organization || null);
-      setForm({ name: current.name || "", mode: modeValue(current.meeting_mode), address: current.attributes?.address || "" });
-      setAttributes(Object.entries(current.attributes || {}).filter(([key]) => key !== "address").map(([key, value]) => ({ id: attributeId(), key, value: typeof value === "string" ? value : JSON.stringify(value) })));
+
+      if (!current) {
+        throw new Error("Your resource profile could not be found.");
+      }
+
+      const responseAttributes = response.attributes || {};
+
+      setResource(current);
+      setOrganization(response.organization || null);
+
+      setForm({
+        name: current.name || "",
+        mode: modeValue(current.meeting_mode),
+        address: responseAttributes.address || "",
+      });
+
+      setAttributes(
+        Object.entries(responseAttributes)
+          .filter(([key]) => key !== "address")
+          .map(([key, value]) => ({
+            id: attributeId(),
+            key,
+            value:
+              typeof value === "string" ? value : JSON.stringify(value),
+          })),
+      );
     } catch (err) {
-      setError(err?.message || "We couldn't load your resource profile. Please try again.");
-    } finally { setLoading(false); }
+      setError(
+        err?.message ||
+          "We couldn't load your resource profile. Please try again.",
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => { load(); }, []);
