@@ -17,7 +17,7 @@ const tenant = (value) =>
 
 export default function ResourceCard({ resource }) {
   const distance = resource.distance_km > 0 ? `${Number(resource.distance_km).toFixed(1)} km away` : null;
-  const slots = resource.next_available_slots || [];
+  const nextSlot = resource.next_available_slot_time;
 
   return (
     <article className="resource-card">
@@ -39,13 +39,11 @@ export default function ResourceCard({ resource }) {
 
       <div className="resource-availability">
         <small>NEXT AVAILABLE</small>
-        {slots.length ? (
+        {nextSlot?.start_unix ? (
           <div className="slot-preview">
-            {slots.slice(0, 2).map((slot) => (
-              <span key={`${slot.start_unix}-${slot.end_unix}`}>
-                {new Date(Number(slot.start_unix) * 1000).toLocaleDateString([], { month: "short", day: "numeric" })} · {new Date(Number(slot.start_unix) * 1000).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-              </span>
-            ))}
+            <span>
+              {new Date(Number(nextSlot.start_unix) * 1000).toLocaleDateString([], { month: "short", day: "numeric" })} · {new Date(Number(nextSlot.start_unix) * 1000).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+            </span>
           </div>
         ) : <span className="no-preview">Check profile</span>}
       </div>

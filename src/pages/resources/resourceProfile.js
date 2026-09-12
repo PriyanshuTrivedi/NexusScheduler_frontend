@@ -47,22 +47,33 @@ export default function ResourceProfile() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (resource) {
-      sessionStorage.setItem(
-        `nexus-resource-${resourceId}`,
-        JSON.stringify(resource),
-      );
-      return;
-    }
+    if (!resourceId) return;
 
-    const saved = sessionStorage.getItem(
-      `nexus-resource-${resourceId}`,
-    );
+    let cancelled = false;
+    api.resourceById(resourceId)
+      .then((response) => {
+        if (cancelled || !response?.resource) return;
+        const current = {
+          ...response.resource,
+          attributes: response.attributes || {},
+        };
+        setResource(current);
+        sessionStorage.setItem(`nexus-resource-${resourceId}`, JSON.stringify(current));
+      })
+      .catch(() => {
+        if (cancelled) return;
+        const saved = sessionStorage.getItem(`nexus-resource-${resourceId}`);
+        if (saved) {
+          try {
+            setResource(JSON.parse(saved));
+          } catch {
+            // Ignore stale session data.
+          }
+        }
+      });
 
-    if (saved) {
-      setResource(JSON.parse(saved));
-    }
-  }, [resource, resourceId]);
+    return () => { cancelled = true; };
+  }, [resourceId]);
 
   useEffect(() => {
     if (!resource?.org_id) return;
@@ -188,11 +199,7 @@ export default function ResourceProfile() {
         <section className="content-card profile-availability">
           <span className="section-kicker">NEXT AVAILABLE</span>
 
-          <h2>
-            {resource.next_available_slots?.length
-              ? "Upcoming slots"
-              : "Check availability"}
-          </h2>
+          <h2>Check availability</h2>
 
           {upcomingSlots.length ? (
             <div className="profile-slots">
@@ -222,7 +229,7 @@ export default function ResourceProfile() {
         </div>
 
         <CalendarSlots
-          slots={resource.next_available_slots || []}
+          slots={upcomingSlots}
           selectedSlot={selected}
           onSelect={setSelected}
           loadSlots={(startUnix, endUnix) => api.resourceAvailability(resourceId, startUnix, endUnix)}

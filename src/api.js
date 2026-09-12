@@ -115,6 +115,16 @@ export const api = {
 
   myResource: () => request("/resources/me"),
 
+  resourceById: (id) => request(`/resources/${encodeURIComponent(id)}`),
+
+  resourceSlots: (id, startUnix, endUnix) =>
+    request(
+      `/resources/${encodeURIComponent(id)}/slots${qs({
+        start_unix: startUnix,
+        end_unix: endUnix,
+      })}`,
+    ),
+
   myAvailability: () => request("/resources/me/availability"),
 
   resourceAvailability: (id, startUnix, endUnix) =>
