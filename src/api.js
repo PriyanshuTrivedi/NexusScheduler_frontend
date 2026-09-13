@@ -25,7 +25,6 @@ async function request(path, options = {}) {
   if (!response.ok) {
     let message =
       data.message || data.error || data.code || `Request failed (${response.status})`;
-
     // Never expose raw protobuf/serialization errors to end users.
     if (/^proto:\s*/i.test(message) || /invalid value for .* field/i.test(message)) {
       message = "Something went wrong while saving your changes. Please check the entered values and try again.";
@@ -39,7 +38,6 @@ async function request(path, options = {}) {
 
 const qs = (params) => {
   const search = new URLSearchParams();
-
   Object.entries(params || {}).forEach(([key, value]) => {
     if (value !== undefined && value !== null && value !== "") {
       search.set(key, value);
@@ -56,7 +54,6 @@ export const api = {
       method: "POST",
       body: JSON.stringify(body),
     }),
-
   registerResource: (body) =>
     request("/auth/resource/register", {
       method: "POST",
@@ -83,7 +80,9 @@ export const api = {
     }),
 
   organizations: () => request("/organizations"),
+
   organization: (id) => request(`/organizations/${id}`),
+
   createOrganization: (body) =>
     request("/organizations", {
       method: "POST",
@@ -110,10 +109,30 @@ export const api = {
     }),
 
   myResource: () => request("/resources/me"),
-  myAvailability: () => request("/resources/me/availability"),
-  resourceAvailability: (id, startUnix, endUnix) =>
-    request(`/resources/${encodeURIComponent(id)}/availability${qs({ start_unix: startUnix, end_unix: endUnix })}`),
 
+  resourceById: (id) => request(`/resources/${encodeURIComponent(id)}`),
+  resourceSlots: (id, startUnix, endUnix) =>
+    request(
+      `/resources/${encodeURIComponent(id)}/slots${qs({
+        start_unix: startUnix,
+        end_unix: endUnix,
+      })}`,
+    ),
+  addSlotException: (id, body) =>
+    request(`/resources/${encodeURIComponent(id)}/slot-exceptions`, {
+      method: "POST",
+      body: JSON.stringify(body),
+    }),
+
+  myAvailability: () => request("/resources/me/availability"),
+
+  resourceAvailability: (id, startUnix, endUnix) =>
+    request(
+      `/resources/${encodeURIComponent(id)}/availability${qs({
+        start_unix: startUnix,
+        end_unix: endUnix,
+      })}`,
+    ),
   updateResource: (body) =>
     request("/resources/me", {
       method: "PUT",
@@ -131,7 +150,6 @@ export const api = {
       method: "PUT",
       body: JSON.stringify(body),
     }),
-
   setMyAvailability: (body) =>
     request("/resources/me/availability", {
       method: "PUT",
@@ -146,10 +164,12 @@ export const api = {
       body: JSON.stringify(body),
     }),
 
-  booking: (reference) => request(`/bookings/${encodeURIComponent(reference)}`),
-  upcomingBookings: () => request("/bookings/me/upcoming"),
-  pastBookings: () => request("/bookings/me/past"),
+  booking: (reference) =>
+    request(`/bookings/${encodeURIComponent(reference)}`),
 
+  upcomingBookings: () => request("/bookings/me/upcoming"),
+
+  pastBookings: () => request("/bookings/me/past"),
   cancelBooking: (reference) =>
     request(`/bookings/${encodeURIComponent(reference)}/cancel`, {
       method: "POST",
@@ -161,9 +181,8 @@ export const api = {
       body: JSON.stringify(body),
     }),
 
-  geocode: (address) => request(`/geocode?${new URLSearchParams({ address }).toString()}`),
-
   resourceUpcomingBookings: () => request("/resources/me/upcoming"),
+
   resourcePastBookings: () => request("/resources/me/past"),
 
   queryString: qs,
