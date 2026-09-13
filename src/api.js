@@ -25,7 +25,6 @@ async function request(path, options = {}) {
   if (!response.ok) {
     let message =
       data.message || data.error || data.code || `Request failed (${response.status})`;
-
     // Never expose raw protobuf/serialization errors to end users.
     if (/^proto:\s*/i.test(message) || /invalid value for .* field/i.test(message)) {
       message = "Something went wrong while saving your changes. Please check the entered values and try again.";
@@ -39,7 +38,6 @@ async function request(path, options = {}) {
 
 const qs = (params) => {
   const search = new URLSearchParams();
-
   Object.entries(params || {}).forEach(([key, value]) => {
     if (value !== undefined && value !== null && value !== "") {
       search.set(key, value);
@@ -56,7 +54,6 @@ export const api = {
       method: "POST",
       body: JSON.stringify(body),
     }),
-
   registerResource: (body) =>
     request("/auth/resource/register", {
       method: "POST",
@@ -135,6 +132,13 @@ export const api = {
       })}`,
     ),
 
+  resourceAvailability: (id, startUnix, endUnix) =>
+    request(
+      `/resources/${encodeURIComponent(id)}/availability${qs({
+        start_unix: startUnix,
+        end_unix: endUnix,
+      })}`,
+    ),
   updateResource: (body) =>
     request("/resources/me", {
       method: "PUT",
@@ -152,7 +156,6 @@ export const api = {
       method: "PUT",
       body: JSON.stringify(body),
     }),
-
   setMyAvailability: (body) =>
     request("/resources/me/availability", {
       method: "PUT",
@@ -174,6 +177,7 @@ export const api = {
 
   pastBookings: () => request("/bookings/me/past"),
 
+  pastBookings: () => request("/bookings/me/past"),
   cancelBooking: (reference) =>
     request(`/bookings/${encodeURIComponent(reference)}/cancel`, {
       method: "POST",
