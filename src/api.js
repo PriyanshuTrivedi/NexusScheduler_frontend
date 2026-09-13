@@ -73,6 +73,7 @@ export const api = {
     }),
 
   me: () => request("/users/me"),
+
   updateProfile: (body) =>
     request("/users/me", {
       method: "PATCH",
@@ -90,6 +91,7 @@ export const api = {
     }),
 
   resourceTypes: () => request("/resource-types"),
+
   createResourceType: (body) =>
     request("/resource-types", {
       method: "POST",
@@ -111,6 +113,7 @@ export const api = {
   myResource: () => request("/resources/me"),
 
   resourceById: (id) => request(`/resources/${encodeURIComponent(id)}`),
+
   resourceSlots: (id, startUnix, endUnix) =>
     request(
       `/resources/${encodeURIComponent(id)}/slots${qs({
@@ -118,13 +121,16 @@ export const api = {
         end_unix: endUnix,
       })}`,
     ),
-  addSlotException: (id, body) =>
-    request(`/resources/${encodeURIComponent(id)}/slot-exceptions`, {
-      method: "POST",
-      body: JSON.stringify(body),
-    }),
 
   myAvailability: () => request("/resources/me/availability"),
+
+  resourceAvailability: (id, startUnix, endUnix) =>
+    request(
+      `/resources/${encodeURIComponent(id)}/availability${qs({
+        start_unix: startUnix,
+        end_unix: endUnix,
+      })}`,
+    ),
 
   resourceAvailability: (id, startUnix, endUnix) =>
     request(
@@ -168,6 +174,8 @@ export const api = {
     request(`/bookings/${encodeURIComponent(reference)}`),
 
   upcomingBookings: () => request("/bookings/me/upcoming"),
+
+  pastBookings: () => request("/bookings/me/past"),
 
   pastBookings: () => request("/bookings/me/past"),
   cancelBooking: (reference) =>

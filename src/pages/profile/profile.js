@@ -114,11 +114,13 @@ function ResourceProfile() {
 
       setResource(current);
       setOrganization(response.organization || null);
+
       setForm({
         name: current.name || "",
         mode: modeValue(current.meeting_mode),
         address: responseAttributes.address || "",
       });
+
       setAttributes(
         Object.entries(responseAttributes)
           .filter(([key]) => key !== "address")

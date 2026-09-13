@@ -532,7 +532,7 @@ export default function Bookings() {
                       <ExternalLink size={12} />
                     </a>
                   )}
-
+                  <br></br>
                   <small>
                     Reference:{" "}
                     {booking.reference_code}
