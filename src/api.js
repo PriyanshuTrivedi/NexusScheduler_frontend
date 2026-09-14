@@ -123,7 +123,7 @@ export const api = {
     ),
 
   addSlotException: (id, body) =>
-  request(`/resources/${encodeURIComponent(id)}/slots`, {
+  request(`/resources/${encodeURIComponent(id)}/slot-exceptions`, {
     method: "POST",
     body: JSON.stringify(body),
   }),
