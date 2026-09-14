@@ -122,6 +122,12 @@ export const api = {
       })}`,
     ),
 
+  addSlotException: (id, body) =>
+  request(`/resources/${encodeURIComponent(id)}/slots`, {
+    method: "POST",
+    body: JSON.stringify(body),
+  }),
+
   myAvailability: () => request("/resources/me/availability"),
 
   resourceAvailability: (id, startUnix, endUnix) =>
