@@ -1,5 +1,5 @@
 .chatbot-launcher {
-  position: fixed; right: 24px; bottom: 24px; z-index: 1000;
+  position: fixed; right: 20px; bottom: 69px; z-index: 1000;
   width: 58px; height: 58px; border: 0; border-radius: 50%;
   background: var(--primary); color: #fff;
   display: grid; place-items: center;
@@ -9,7 +9,7 @@
 .chatbot-launcher:hover { background: var(--primary-dark); transform: translateY(-2px); }
 
 .chatbot-window {
-  position: fixed; right: 24px; bottom: 24px; z-index: 1000;
+  position: fixed; right: 20px; bottom: 69px; z-index: 1000;
   width: 380px; max-width: calc(100vw - 32px);
   height: 560px; max-height: calc(100vh - 48px);
   display: flex; flex-direction: column; overflow: hidden;
