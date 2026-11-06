@@ -199,5 +199,20 @@ export const api = {
 
   resourcePastBookings: () => request("/resources/me/past"),
 
+  sendChatMessage: (body) =>
+    request("/chat/messages", {
+      method: "POST",
+      body: JSON.stringify(body),
+    }),
+
+  closeChatConversation: () =>
+    request("/chat/conversations/close", { method: "POST" }),
+
+  chatConversations: ({ limit, offset } = {}) =>
+    request(`/chat/conversations${qs({ limit, offset })}`),
+
+  chatMessages: (conversationId) =>
+    request(`/chat/conversations/${encodeURIComponent(conversationId)}/messages`),
+
   queryString: qs,
 };

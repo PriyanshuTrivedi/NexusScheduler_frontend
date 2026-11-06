@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import ClientOnlyRoute from "./components/ClientOnlyRoute/ClientOnlyRoute";
+import Chatbot from "./components/Chatbot/Chatbot";
 import { AuthProvider } from "./context/AuthContext";
 import Home from "./pages/home/home";
 import Login from "./pages/auth/login";
@@ -33,6 +34,7 @@ export default function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
+        <Chatbot />
       </BrowserRouter>
     </AuthProvider>
   );
