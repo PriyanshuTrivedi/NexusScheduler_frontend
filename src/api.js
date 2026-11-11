@@ -1,43 +1,91 @@
+
 const API = process.env.REACT_APP_API_BASE_URL || "http://localhost:8080/api/v1";
 
-async function request(path, options = {}) {
+function authHeaders(extra = {}) {
   const token = localStorage.getItem("nexus_jwt");
-  const headers = {
+
+  return {
     Accept: "application/json",
-    ...(options.body ? { "Content-Type": "application/json" } : {}),
-    ...(options.headers || {}),
+    ...extra,
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
+}
 
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
-  }
-
-  const response = await fetch(`${API}${path}`, { ...options, headers });
+async function parseResponse(response) {
   const text = await response.text();
-  let data = {};
+
+  if (!text) return {};
 
   try {
-    data = text ? JSON.parse(text) : {};
+    return JSON.parse(text);
   } catch {
-    data = { message: text };
+    return { message: text };
+  }
+}
+
+function getErrorMessage(data, status) {
+  let message =
+    data.message || data.error || data.code || `Request failed (${status})`;
+
+  // Never expose raw protobuf/serialization errors to end users.
+  if (/^proto:\s*/i.test(message) || /invalid value for .* field/i.test(message)) {
+    message =
+      "Something went wrong while saving your changes. Please check the entered values and try again.";
   }
 
-  if (!response.ok) {
-    let message =
-      data.message || data.error || data.code || `Request failed (${response.status})`;
-    // Never expose raw protobuf/serialization errors to end users.
-    if (/^proto:\s*/i.test(message) || /invalid value for .* field/i.test(message)) {
-      message = "Something went wrong while saving your changes. Please check the entered values and try again.";
-    }
+  return message;
+}
 
-    throw new Error(message);
+async function request(path, options = {}) {
+  const headers = authHeaders({
+    ...(options.body ? { "Content-Type": "application/json" } : {}),
+    ...(options.headers || {}),
+  });
+
+  const response = await fetch(`${API}${path}`, { ...options, headers });
+  const data = await parseResponse(response);
+
+  if (!response.ok) {
+    throw new Error(getErrorMessage(data, response.status));
   }
 
   return data;
 }
 
+// FormData requests must not manually set Content-Type.
+// The browser adds the multipart boundary automatically.
+async function requestMultipart(path, body) {
+  const response = await fetch(`${API}${path}`, {
+    method: "POST",
+    headers: authHeaders(),
+    body,
+  });
+
+  const data = await parseResponse(response);
+
+  if (!response.ok) {
+    throw new Error(getErrorMessage(data, response.status));
+  }
+
+  return data;
+}
+
+async function requestBlob(path) {
+  const response = await fetch(`${API}${path}`, {
+    headers: authHeaders({ Accept: "application/pdf" }),
+  });
+
+  if (!response.ok) {
+    const data = await parseResponse(response);
+    throw new Error(getErrorMessage(data, response.status));
+  }
+
+  return response.blob();
+}
+
 const qs = (params) => {
   const search = new URLSearchParams();
+
   Object.entries(params || {}).forEach(([key, value]) => {
     if (value !== undefined && value !== null && value !== "") {
       search.set(key, value);
@@ -54,6 +102,7 @@ export const api = {
       method: "POST",
       body: JSON.stringify(body),
     }),
+
   registerResource: (body) =>
     request("/auth/resource/register", {
       method: "POST",
@@ -123,10 +172,10 @@ export const api = {
     ),
 
   addSlotException: (id, body) =>
-  request(`/resources/${encodeURIComponent(id)}/slot-exceptions`, {
-    method: "POST",
-    body: JSON.stringify(body),
-  }),
+    request(`/resources/${encodeURIComponent(id)}/slot-exceptions`, {
+      method: "POST",
+      body: JSON.stringify(body),
+    }),
 
   myAvailability: () => request("/resources/me/availability"),
 
@@ -138,13 +187,6 @@ export const api = {
       })}`,
     ),
 
-  resourceAvailability: (id, startUnix, endUnix) =>
-    request(
-      `/resources/${encodeURIComponent(id)}/availability${qs({
-        start_unix: startUnix,
-        end_unix: endUnix,
-      })}`,
-    ),
   updateResource: (body) =>
     request("/resources/me", {
       method: "PUT",
@@ -152,23 +194,41 @@ export const api = {
     }),
 
   setResourceStatus: (id, body) =>
-    request(`/resources/${id}/status`, {
+    request(`/resources/${encodeURIComponent(id)}/status`, {
       method: "PATCH",
       body: JSON.stringify(body),
     }),
 
   setAvailability: (id, body) =>
-    request(`/resources/${id}/availability`, {
+    request(`/resources/${encodeURIComponent(id)}/availability`, {
       method: "PUT",
       body: JSON.stringify(body),
     }),
+
   setMyAvailability: (body) =>
     request("/resources/me/availability", {
       method: "PUT",
       body: JSON.stringify(body),
     }),
 
-  getSlot: (id) => request(`/slots/${id}`),
+  // Resource documents
+  listDocuments: () => request("/documents"),
+
+  uploadDocument: (file) => {
+    const body = new FormData();
+    body.append("file", file);
+    return requestMultipart("/documents", body);
+  },
+
+  getDocument: (objectId) =>
+    requestBlob(`/documents/${encodeURIComponent(objectId)}`),
+
+  deleteDocument: (objectId) =>
+    request(`/documents/${encodeURIComponent(objectId)}`, {
+      method: "DELETE",
+    }),
+
+  getSlot: (id) => request(`/slots/${encodeURIComponent(id)}`),
 
   createBooking: (body) =>
     request("/bookings", {
@@ -183,7 +243,6 @@ export const api = {
 
   pastBookings: () => request("/bookings/me/past"),
 
-  pastBookings: () => request("/bookings/me/past"),
   cancelBooking: (reference) =>
     request(`/bookings/${encodeURIComponent(reference)}/cancel`, {
       method: "POST",
