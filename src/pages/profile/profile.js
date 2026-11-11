@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Building2, CheckCircle2, Mail, MapPin, Phone, Plus, Save, Trash2, UserRound, Video } from "lucide-react";
+import { Building2, CheckCircle2, FileText, Mail, MapPin, Phone, Plus, Save, Trash2, UserRound, Video } from "lucide-react";
+import { Link } from "react-router-dom";
 import { api } from "../../api";
 import { useAuth } from "../../context/AuthContext";
 import RecurringAvailabilityModal from "../../components/RecurringAvailabilityModal/RecurringAvailabilityModal";
@@ -194,10 +195,13 @@ function ResourceProfile() {
     <div className="page-container profile-account-page">
       <div className="profile-page-heading">
         <div><span className="section-kicker">RESOURCE PROFILE</span><h1>Your profile</h1><p>Everything clients see before scheduling with you.</p></div>
-        <div className="profile-top-actions">
-          <button type="button" className="button button-secondary" onClick={() => setEditing((value) => !value)}>{editing ? "Cancel" : "Edit"}</button>
-          <button type="button" className="button button-secondary" onClick={openOneTimeAvailability}><Plus size={16} /> Add one-time availability</button>
-          <button type="button" className="button button-primary" onClick={openAvailability} disabled={availabilityLoading}><Plus size={16} /> {availabilityLoading ? "Loading…" : "Edit recurring availability"}</button>
+        <div className="profile-heading-actions">
+          <Link to="/documents" className="button button-secondary"><FileText size={16} /> View Documents</Link>
+          <div className="profile-top-actions">
+            <button type="button" className="button button-secondary" onClick={() => setEditing((value) => !value)}>{editing ? "Cancel" : "Edit"}</button>
+            <button type="button" className="button button-secondary" onClick={openOneTimeAvailability}><Plus size={16} /> Add one-time availability</button>
+            <button type="button" className="button button-primary" onClick={openAvailability} disabled={availabilityLoading}><Plus size={16} /> {availabilityLoading ? "Loading…" : "Edit recurring availability"}</button>
+          </div>
         </div>
       </div>
       <form className="content-card resource-profile-form" onSubmit={save}>

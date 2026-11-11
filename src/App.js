@@ -12,6 +12,7 @@ import ResourceSearch from "./pages/resources/resourceSearch";
 import ResourceProfile from "./pages/resources/resourceProfile";
 import Bookings from "./pages/bookings/bookings";
 import Profile from "./pages/profile/profile";
+import Documents from "./pages/documents/documents";
 
 export default function App() {
   return (
@@ -29,8 +30,8 @@ export default function App() {
             <Route path="/resources/:resourceId" element={<ResourceProfile />} />
             <Route path="/resources/:resourceId/slots" element={<ResourceProfile />} />
             <Route path="/bookings" element={<ProtectedRoute><Bookings /></ProtectedRoute>} />
-            
             <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+            <Route path="/documents" element={<ProtectedRoute><Documents /></ProtectedRoute>} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
